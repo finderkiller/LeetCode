@@ -5,21 +5,19 @@ class Solution:
         """
         if not matrix:
             return []
-        rowup = 0
+        rowup = 0 
         rowdown = len(matrix)-1
         colleft = 0
-        colright = len(matrix[0])-1
-        
+        colright = len(matrix)-1
         while rowup < rowdown:
             for col in range(colleft, colright):
-                offset = col - rowup
+                offset = col - colleft
                 tmp = matrix[rowup][col]
                 matrix[rowup][col] = matrix[rowdown-offset][colleft]
                 matrix[rowdown-offset][colleft] = matrix[rowdown][colright-offset]
-                matrix[rowdown][colright-offset] = matrix[col][colright]
-                matrix[col][colright] = tmp
-            rowup +=1
-            rowdown -=1
-            colright -=1
-            colleft +=1
-        
+                matrix[rowdown][colright-offset] = matrix[rowup+offset][colright]
+                matrix[rowup+offset][colright] = tmp
+            rowup+=1
+            rowdown-=1
+            colleft+=1
+            colright-=1

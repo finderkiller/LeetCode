@@ -1,10 +1,5 @@
-# Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, x):
-#         self.val = x
-#         self.left = None
-#         self.right = None
 
+#using table, so need to start and end that idx could be the same
 class Solution:
     def buildTree(self, inorder: List[int], postorder: List[int]) -> TreeNode:
         if not inorder or not postorder:
@@ -17,17 +12,37 @@ class Solution:
         for idx, value in enumerate(inorder):
             self.table[value] = idx
         return self.helper(inorder, postorder, 0, length_in-1, 0, length_post-1)
-    def helper(self, inorder, postorder, start_in, end_in, start_post, end_post):
-        if start_in > end_in or start_post > end_post:
-            return None
-        node = TreeNode(postorder[end_post])
-        node_idx = -1
-        if node.val in self.table:
-            node_idx = self.table[node.val]
-        else:
-            return None
-        left_tree_size = node_idx - start_in
-        right_tree_size = end_in - node_idx
-        node.left = self.helper(inorder, postorder, start_in, node_idx-1, start_post, start_post+left_tree_size-1)
-        node.right = self.helper(inorder, postorder, node_idx+1, end_in, end_post-right_tree_size, end_post-1)
+    def helper(self, inorder, postorder, in_start, in_end, post_start, post_end):
+        if in_start > in_end or post_start > post_end:
+            return
+        value = postorder[post_end]
+        index = self.table[value]
+        leftsize = index-in_start
+        node = TreeNode(value)
+        node.left = self.helper(inorder, postorder, in_start, index-1, post_start, post_start+leftsize-1)
+        node.right = self.helper(inorder, postorder, index+1, in_end, post_start+leftsize, post_end-1)
         return node
+
+class Solution:
+    def buildTree(self, inorder: List[int], postorder: List[int]) -> TreeNode:
+        if not inorder or not postorder:
+            return None
+        length_post = len(postorder)
+        length_in = len(inorder)
+        if length_post != length_in:
+            return None
+        return self.helper(inorder, postorder)
+    def helper(self, inorder, postorder):
+        if not inorder or not postorder:
+            return
+        value = postorder[-1]
+        leftsize = 0
+        for data in inorder:
+            if data == value:
+                break
+            leftsize += 1
+        node = TreeNode(value)
+        node.left = self.helper(inorder[:leftsize], postorder[:leftsize])
+        node.right = self.helper(inorder[leftsize+1:], postorder[leftsize:len(postorder)-1])
+        return node
+        

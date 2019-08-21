@@ -8,24 +8,21 @@
 class Solution:
     def buildTree(self, preorder: List[int], inorder: List[int]) -> TreeNode:
         if not preorder or not inorder:
-            return []
-        length_pre = len(preorder)
-        length_in = len(inorder)
-        if length_pre != length_in:
-            return []
-        return self.helper(preorder, inorder, 0, length_pre-1, 0, length_in-1)
-    def helper(self, preorder, inorder, start_pre, end_pre, start_in, end_in):
-        if start_in > end_in or start_pre > end_pre:
-            return None
-        node = TreeNode(preorder[start_pre])
-        node_idx = -1
-        for idx in range(start_in, end_in+1):
-            if inorder[idx] == node.val:
-                node_idx = idx
+            return
+        if len(preorder) != len(inorder):
+            return
+        return self.helper(preorder, inorder)
+    def helper(self, preorder, inorder):
+        if not preorder or not inorder:
+            return
+        value = preorder[0]
+        leftsize = 0
+        for data in inorder:
+            if data == value:
                 break
-        left_tree_size = node_idx-start_in
-        right_tree_size = end_in-node_idx
-        node.left = self.helper(preorder, inorder, start_pre+1, start_pre+left_tree_size, start_in, node_idx-1)
-        node.right = self.helper(preorder, inorder, end_pre-right_tree_size+1, end_pre, node_idx+1, end_in)
+            leftsize += 1
+        node = TreeNode(value)
+        node.left = self.helper(preorder[1:leftsize+1], inorder[:leftsize])
+        node.right = self.helper(preorder[leftsize+1:], inorder[leftsize+1:])
         return node
         

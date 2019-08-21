@@ -7,18 +7,19 @@
 
 class Solution:
     def pathSum(self, root: TreeNode, sum: int) -> List[List[int]]:
-        result= []
-        prefix = []
-        self.helper(prefix, root, sum, result)
+        collect = []
+        result = []
+        self.helper(collect, root, sum, result)
         return result
-    def helper(self, prefix, node, sum, result):
+    def helper(self, collect, node, target, result):
         if node == None:
             return
-        prefix.append(node.val)
-        if node.left == None and node.right == None and sum-node.val == 0:
-            result.append(list(prefix))
-            prefix.pop()
+        if node.left == None and node.right == None and node.val == target:
+            new_list = list(collect)
+            new_list.append(target)
+            result.append(new_list)
             return
-        self.helper(prefix, node.left, sum-node.val, result)
-        self.helper(prefix, node.right, sum-node.val, result)
-        prefix.pop()
+        collect.append(node.val)
+        self.helper(collect, node.left, target-node.val, result)
+        self.helper(collect, node.right, target-node.val, result)
+        collect.pop()

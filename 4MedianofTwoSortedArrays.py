@@ -1,5 +1,35 @@
 class Solution:
     def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+        merged = self.merge(nums1, nums2)
+        length = len(merged)
+        if length % 2 == 0:
+            return (merged[length//2] + merged[length//2 -1])/2
+        return merged[length//2]
+    
+    def merge(self, nums1, nums2):
+        result = []
+        idx1 = 0
+        idx2 = 0
+        while idx1 < len(nums1) or idx2 < len(nums2):
+            if idx1 == len(nums1):
+                result.append(nums2[idx2])
+                idx2 += 1
+                continue
+            if idx2 == len(nums2):
+                result.append(nums1[idx1])
+                idx1 += 1
+                continue
+            if nums1[idx1] < nums2[idx2]:
+                result.append(nums1[idx1])
+                idx1 += 1
+            else:
+                result.append(nums2[idx2])
+                idx2 += 1
+        return result
+
+#binary seasrch
+class Solution:
+    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
         x = len(nums1)
         y = len(nums2)
         if x > y:

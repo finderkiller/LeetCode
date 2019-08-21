@@ -11,6 +11,26 @@
 #         self.left = None
 #         self.right = None
 
+#find mid every time
+class Solution:
+    def sortedListToBST(self, head: ListNode) -> TreeNode:
+        if not head:
+            return
+        dummy = ListNode(None)
+        dummy.next = head
+        prev = dummy
+        mid=head
+        fast=head
+        while fast!=None and fast.next != None:
+            prev = mid
+            fast = fast.next.next
+            mid = mid.next
+        prev.next = None
+        node = TreeNode(mid.val)
+        node.right = self.sortedListToBST(mid.next)
+        node.left = self.sortedListToBST(dummy.next)
+        return node
+
 class Solution:
     def sortedListToBST(self, head: ListNode) -> TreeNode:
         length = 0

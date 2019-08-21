@@ -1,36 +1,24 @@
 #expand O(n^2)
-class Result:
-    def __init__(self, length, start, end):
-        self.length = length
-        self.start = start
-        self.end = end
 class Solution:
     def longestPalindrome(self, s: str) -> str:
-        maxlength = 0
-        start = 0
-        end = 0
-        if s == None or len(s) == 0:
+        if not s:
             return ""
+        result = ""
         for idx in range(len(s)):
-            result1 = self.expand(s, idx, idx)
-            result2 = self.expand(s, idx, idx+1)
-            if result1.length > result2.length:
-                result = result1
-            else:
-                result = result2
-            if result.length > maxlength:
-                maxlength = result.length
-                start = result.start
-                end = result.end
-        return s[start:end+1]
-    def expand(self, s, left, right):
-        result = Result(0, left, right)
-        while(left >= 0 and right < len(s) and s[left] == s[right]):
-            result.length = right - left + 1
-            result.end = right
-            result.start = left
-            right += 1
-            left -= 1
+            a = self.expand(s, idx, idx)
+            b = self.expand(s, idx, idx+1)
+            if len(result) < len(a):
+                result = a
+            if len(result) < len(b):
+                result = b
+        return result
+            
+    def expand(self, string, left, right):
+        result = ""
+        while left >=0 and right < len(string) and string[left]==string[right]:
+            result = string[left:right+1]
+            left-=1
+            right+=1
         return result
 #DP O(n^2)
 class Solution:

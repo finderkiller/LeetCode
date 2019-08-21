@@ -1,30 +1,41 @@
 class Solution:
     def isValidSudoku(self, board: List[List[str]]) -> bool:
-        if board == None:
-            return False
+        if not board:
+            return True
+        return self.validRow(board) and self.validCol(board) and self.validCube(board)
+    def validRow(self, board):
         for row in range(len(board)):
-            for col in range(len(board[0])):
-                if board[row][col] == '.': continue
-                if not self.valid(board, row, col):
-                    return False
-        return True
-    def valid(self, nums, row, col):
-        value = nums[row][col]
-        #! check in the row
-        for j in range(len(nums[row])):
-            if j == col: continue 
-            if nums[row][j] == value: return False
-        #! check in the col
-        for i in range(len(nums)):
-            if i == row: continue
-            if nums[i][col] == value: return False
-        #! check in the cube
-        for i in range((row//3) *3, (row//3 + 1)*3):
-            for j in range((col//3)*3, (col//3 + 1)*3):
-                if i == row and j == col:
+            table = set()
+            for col in range(len(board[row])):
+                if board[row][col] == ".":
                     continue
-                if nums[i][j] == value:
+                if board[row][col] in table:
                     return False
+                table.add(board[row][col])
+        return True
+    def validCol(self, board):
+        for col in range(len(board[0])):
+            table= set()
+            for row in range(len(board)):
+                if board[row][col] == ".":
+                    continue
+                if board[row][col] in table:
+                    return False
+                table.add(board[row][col])
+        return True
+    def validCube(self, board):
+        for i in range(len(board)//3):
+            for j in range(len(board)//3):
+                table = set()
+                for row in range(i*3, (i+1)*3):
+                    for col in range(j*3, (j+1)*3):
+                        if board[row][col] == ".":
+                            continue
+                        if board[row][col] in table:
+                            return False
+                        table.add(board[row][col])
         return True
         
+            
+            
         

@@ -3,22 +3,19 @@ class Solution:
     def canJump(self, nums: List[int]) -> bool:
         if not nums:
             return False
-        table = {}
+        table = set()
         return self.helper(nums, table, 0)
-    def helper(self, nums, table, index):
-        if not nums:
-            return False
-        if len(nums) == 1:
+    def helper(self, nums, table, start):
+        if start == len(nums)-1:
             return True
-        if index in table:
-            return table[index]
-        value = nums[0]
-        result = False
-        if value > 0:
-            for jumplength in range(1, value+1):
-                result |= self.helper(nums[jumplength:], table, index+jumplength)
-        table[index] = result
-        return table[index]
+        if start in table:
+            return True
+        for step in range(1, nums[start]+1):
+            if self.helper(nums, table, start+step):
+                table.add(start)
+                return True
+        return False
+        
 
 # bottom-up
 class Solution:

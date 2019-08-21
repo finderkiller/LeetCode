@@ -1,24 +1,22 @@
 class Solution:
     def isMatch(self, s: str, p: str) -> bool:
-        if s == None or p == None:
-            return False
-        #!dp = [[False] * (len(p) + 1)] * (len(s) + 1)
-        dp = [[False for i in range(len(p) + 1)] for j in range(len(s) + 1)]
-        dp[0][0] = True
+        table = [[False for i in range(len(p)+1)] for j in range(len(s)+1)]
         
-        for i in range(1, len(dp[0])):
-            if p[i-1] == "*":
-                dp[0][i] = dp[0][i-2]
-       
+        table[0][0] = True
+        for col in range(1,len(table[0])):
+            pattern_index = col-1
+            if p[pattern_index] == "*":
+                table[0][col] = table[0][col-2] if col-2 >=0 else False
         
-        for i in range(1, len(dp)):
-            for j in range(1, len(dp[0])):
-                if s[i-1] == p[j-1] or p[j-1] == ".":
-                    dp[i][j] = dp[i-1][j-1]
-                elif p[j-1] == "*":
-                    dp[i][j] = dp[i][j-2]
-                    if p[j-2] == s[i-1] or p[j-2] == ".":
-                        dp[i][j] |= dp[i-1][j]
-                else:
-                    dp[i][j] = False
-        return dp[len(s)][len(p)]
+        for row in range(1,len(table)):
+            for col in range(1,len(table[0])):
+                string_index = row-1
+                pattern_index = col-1
+                if p[pattern_index] == s[string_index] or p[pattern_index] == ".":
+                    table[row][col] = table[row-1][col-1]
+                elif p[pattern_index] == "*":
+                    table[row][col] = table[row][col-2]
+                    if p[pattern_index-1] == s[string_index] or p[pattern_index-1] == ".":
+                        table[row][col] |= table[row-1][col]
+        return table[len(s)][len(p)]
+                

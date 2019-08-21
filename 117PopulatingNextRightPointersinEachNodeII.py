@@ -10,30 +10,30 @@ class Node:
 #DFS, remember: traverse right first, and then traverse left
 class Solution:
     def connect(self, root: 'Node') -> 'Node':
-        if root == None:
-            return None
+        if not root:
+            return
+        root.next = None
         self.helper(root)
         return root
     def helper(self, node):
-        if node == None:
+        if not node:
             return
+        nearest_right = self.findNearestRight(node)
+        if node.right:
+            node.right.next = nearest_right
+        if node.left:
+            node.left.next = node.right if node.right else nearest_right
+        self.helper(node.right)
+        self.helper(node.left)
+    def findNearestRight(self, node):
         p = node.next
         while p != None:
             if p.left:
-                p = p.left
-                break
+                return p.left
             if p.right:
-                p = p.right
-                break
+                return p.right
             p = p.next
-
-        if node.left:
-            node.left.next = node.right if node.right != None else p
-        if node.right:
-            node.right.next = p
-        
-        self.helper(node.right)
-        self.helper(node.left)
+        return p
 
 #BFS
 """

@@ -7,18 +7,16 @@
 
 class Solution:
     def flatten(self, root: TreeNode) -> None:
-        if not root:
+        if root == None:
             return
-        if root.left:
-            self.flatten(root.left)
-        if root.right:
-            self.flatten(root.right)
-        if root.left:
-            nextStart = root.right
-            root.right = root.left
-            root.left = None
-            tmp = root.right
-            while tmp.right != None:
-                tmp = tmp.right
-            tmp.right = nextStart
+        self.flatten(root.left)
+        self.flatten(root.right)
+        tmp = root.right
+        root.right = root.left
+        root.left = None
+        tail = root
+        while tail.right!=None:
+            tail = tail.right
+        tail.right = tmp
+        
         

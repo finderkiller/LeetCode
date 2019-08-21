@@ -1,3 +1,12 @@
+# sorted, and find max:
+class Solution:
+    def maximumProduct(self, nums: List[int]) -> int:
+        if not nums or len(nums) < 3:
+            return 0
+        nums = sorted(nums)
+        return max(nums[0] * nums[1] * nums[-1], nums[-3]*nums[-2]*nums[-1])
+
+# scan, find 2 number of min and 3 number of max
 class Solution:
     def maximumProduct(self, nums: List[int]) -> int:
         if not nums or len(nums) < 3:

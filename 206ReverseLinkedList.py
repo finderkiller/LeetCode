@@ -1,17 +1,19 @@
-#! iteration
-class Solution:
-    def reverseList(self, head: ListNode) -> ListNode:
-        if head == None:
-            return None
-        cur = None
-        while head != None:
-            temp = head.next
-            head.next = cur
-            cur = head
-            if temp == None:
-                return head
-            head = temp
-        return head
+class Solution(object):
+    def reverseList(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        if not head:
+            return 
+        prev = None
+        cur = head
+        while cur != None:
+            nextStart = cur.next
+            cur.next = prev
+            prev = cur
+            cur = nextStart
+        return prev
 
 #! recursive
 class Solution:
