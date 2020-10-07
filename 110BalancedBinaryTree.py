@@ -45,4 +45,33 @@ class Solution:
             return -sys.maxsize-1
         return max(leftHeight, rightHeight)+1
         
+# using global member
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution(object):
+    def isBalanced(self, root):
+        """
+        :type root: TreeNode
+        :rtype: bool
+        """
+        self.is_balanced = True
+        self.getHeight(root)
+        return self.is_balanced
+        
+    def getHeight(self, node):
+        if not node:
+            return 0
+        left = self.getHeight(node.left)
+        right = self.getHeight(node.right)
+        if not self.is_balanced:
+            return
+        if abs(left-right) > 1:
+            self.is_balanced = False
+            return
+        return max(left, right)+1
         

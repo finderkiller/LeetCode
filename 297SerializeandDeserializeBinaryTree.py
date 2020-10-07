@@ -7,30 +7,33 @@ class Codec:
         :rtype: str
         """
         if not root:
-            return "#,"
-        result = str(root.val) + ","
+            return 'x,'
+        result = str(root.val) + ','
         result += self.serialize(root.left)
         result += self.serialize(root.right)
         return result
-
+        
     def deserialize(self, data):
         """Decodes your encoded data to tree.
         
         :type data: str
         :rtype: TreeNode
         """
+        if not data:
+            return
         self.idx = 0
-        nums = data.split(",")
-        return self.helper(nums)
-    
-    def helper(self, nums):
-        if self.idx >= len(nums):
+        self.array = data.split(',')
+        return self.helper()
+    def helper(self):
+        if self.idx >= len(self.array):
             return
-        if nums[self.idx] == "#":
+        if self.array[self.idx] == 'x':
+            self.idx += 1
             return
-        node = TreeNode(int(nums[self.idx]))
+        value = int(self.array[self.idx])
+        node = TreeNode(value)
         self.idx += 1
-        node.left = self.helper(nums)
-        self.idx += 1
-        node.right = self.helper(nums)
+        node.left = self.helper()
+        node.right = self.helper()
         return node
+        

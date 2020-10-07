@@ -1,27 +1,33 @@
-#DP
+#recursive, memo, time: s*n, space: s*n
 class Solution:
     def coinChange(self, coins: List[int], amount: int) -> int:
-        if not coins or amount == 0:
+        if not coins:
+            return -1
+        self.table = {}
+        return self.helper(coins, 0, 0, amount)
+    
+    def helper(self, coins, start, current, amount):
+        if current == amount:
             return 0
-        table = [sys.maxsize for i in range(amount+1)]
-        table[0] = 0
-        
-        for idx in range(1, amount+1):
-            for coin in coins:
-                if idx-coin >= 0:
-                    table[idx] = min(table[idx], table[idx-coin]+1)
-        return table[amount] if table[amount] != sys.maxsize else -1
-
-#DP coin放外層
+        if current > amount:
+            return -1
+        if (start, current) in self.table:
+            return self.table[(start, current)]
+        result = sys.maxsize
+        for idx in range(start, len(coins)):
+            ret = self.helper(coins, idx, current+coins[idx], amount)
+            if ret == -1:
+                continue
+            result = min(result, 1+ret)
+        self.table[(start, current)] = result if result != sys.maxsize else -1
+        return self.table[(start, current)]
+#DP, time: s*n, space = s
 class Solution:
     def coinChange(self, coins: List[int], amount: int) -> int:
-        if not coins or amount == 0:
-            return 0
         table = [sys.maxsize for i in range(amount+1)]
         table[0] = 0
         
         for coin in coins:
-            for idx in range(1, amount+1):
-                if idx-coin >= 0:
-                    table[idx] = min(table[idx], table[idx-coin]+1)
-        return table[amount] if table[amount] != sys.maxsize else -1
+            for value in range(coin, len(table)):
+                table[value] = min(table[value], 1+table[value-coin])
+        return table[-1] if table[-1] != sys.maxsize else -1

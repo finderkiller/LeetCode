@@ -1,15 +1,17 @@
-#brute force
+#recursive, memo
 class Solution:
     def maxCoins(self, nums: List[int]) -> int:
-        if not nums:
-            return 0
+        nums.insert(0, 1)
+        nums.append(1)
+        self.table = {}
+        return self.helper(nums, 1, len(nums)-2)
+    def helper(self, nums, left, right):
         result = 0
-        for idx in range(len(nums)):
-            num = nums[idx]
-            left = nums[idx-1] if idx-1 >= 0 else 1
-            right = nums[idx+1] if idx+1 < len(nums) else 1
-            current = left * nums[idx] * right 
-            result = max(result, current + self.maxCoins(nums[:idx]+nums[idx+1:]))
+        if (left, right) in self.table:
+            return self.table[(left, right)]
+        for idx in range(left, right+1):
+            result = max(result, nums[left-1]*nums[idx]*nums[right+1] + self.helper(nums, left, idx-1) + self.helper(nums, idx+1, right))
+        self.table[(left, right)] = result
         return result
 
 #DP

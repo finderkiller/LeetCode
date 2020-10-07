@@ -8,16 +8,16 @@ class Node:
 """
 class Solution:
     def copyRandomList(self, head: 'Node') -> 'Node':
-        table = {}
-        return self.helper(head, table)
-    def helper(self, node, table):
+        self.table = {}
+        return self.helper(head)
+    
+    def helper(self, node):
         if not node:
-            return None
-        if node.val in table:
-            return table[node.val]
+            return
+        if (node.val, node.next, node.random) in self.table:
+            return self.table.get((node.val, node.next, node.random))
         new_node = Node(node.val, None, None)
-        table[node.val] = new_node
-        new_node.next = self.helper(node.next, table)
-        new_node.random = self.helper(node.random, table)
-        return table[node.val]
-        
+        self.table[(node.val, node.next, node.random)] = new_node
+        new_node.next = self.helper(node.next)
+        new_node.random = self.helper(node.random)
+        return new_node

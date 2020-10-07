@@ -1,52 +1,29 @@
 #BFS
 class Solution:
     def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
-        self.depend_table = {}
-        self.child_table = {}
+        self.childTable = [[] for i in range(numCourses)]
+        self.dependNumTable = [0 for i in range(numCourses)]
         
-        course_list = []
-        for idx in range(numCourses):
-            self.depend_table[idx] = 0
-            self.child_table[idx] = []
-            course_list.append(idx)
-        for dependence in prerequisites:
-            self.buildChildTable(dependence)
-            self.buildDependTable(dependence)
-            
+        for dependancy in prerequisites:
+            parent = dependancy[1]
+            child = dependancy[0]
+            self.childTable[parent].append(child)
+            self.dependNumTable[child] += 1
+
         result = []
-        order = []
-        self.buildNoDependCourse(course_list, order)
-        
-        while len(order) > 0:
-            current = order.pop(0)
-            result.append(current)
-            for child in self.child_table[current]:
-                self.depend_table[child] -= 1
-            self.buildNoDependCourse(self.child_table[current], order)
-            
+        queue = []
+        for numCourse in range(numCourses):
+            if self.dependNumTable[numCourse] == 0:
+                queue.append(numCourse)
+        while len(queue) > 0:
+            course = queue.pop(0)
+            result.append(course)
+            for child in self.childTable[course]:
+                self.dependNumTable[child] -= 1
+                if self.dependNumTable[child] == 0:
+                    queue.append(child)
+                    
         return result if len(result) == numCourses else []
-        
-        
-        
-    def buildNoDependCourse(self, course_list, order):
-        for idx, data in enumerate(course_list):
-            if self.depend_table[data] == 0:
-                order.append(data)
-            
-            
-    def buildChildTable(self, pair):
-        if not pair:
-            return
-        parent = pair[1]
-        child = pair[0]
-        self.child_table[parent].append(child)
-    
-    def buildDependTable(self, pair):
-        if not pair:
-            return
-        parent = pair[1]
-        child = pair[0]
-        self.depend_table[child] += 1
 
 #DFS
 class Solution:
@@ -77,3 +54,42 @@ class Solution:
         result.append(course)
         self.status_table[course] = "visited"
         return True
+
+# DFS, build reverse table
+class Solution(object):
+    def findOrder(self, numCourses, prerequisites):
+        """
+        :type numCourses: int
+        :type prerequisites: List[List[int]]
+        :rtype: List[int]
+        """
+        child_table = {}
+        status_table = {}
+        ans =[]
+        for num in range(numCourses):
+            child_table[num] = []
+            status_table[num] = "unvisited"
+        self.buildChildTable(child_table, prerequisites)
+        for num in range(numCourses):
+            if status_table[num] == "visited":
+                continue
+            if not self.helper(status_table, child_table, num, ans):
+                return []
+        return ans
+    
+    def helper(self, status_table, child_table, num, ans):
+        if status_table[num] == "visiting":
+            return False
+        status_table[num] = "visiting"
+        for child in child_table[num]:
+            if status_table[child] == "visited":
+                continue
+            if not self.helper(status_table, child_table, child, ans):
+                return False
+        ans.append(num)
+        status_table[num] = "visited"
+        return True
+
+    def buildChildTable(self, table, prerequisites):
+        for dependancy in prerequisites:
+            table[dependancy[0]].append(dependancy[1])

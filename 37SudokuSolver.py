@@ -1,7 +1,3 @@
-class Coordinate:
-    def __init__(self, row, col):
-        self.row = row
-        self.col = col
 class Solution:
     def solveSudoku(self, board: List[List[str]]) -> None:
         """
@@ -17,30 +13,23 @@ class Solution:
                 if board[row][col] != ".":
                     continue
                 for value in range(1, 10):
-                    board[row][col] = str(value)
-                    if self.isValid(board, row, col) and self.helper(board):
-                        return True
+                    if self.valid(board, row, col, str(value)):
+                        board[row][col] = str(value)
+                        if self.helper(board):
+                            return True
                 board[row][col] = "."
                 return False
         return True
-
-    def isValid(self, board, row, col):
-        value = board[row][col]
-        start = Coordinate(row, col)
+                    
+    def valid(self, board, input_row, input_col, value):
         for col in range(len(board[0])):
-            if col == start.col:
-                continue
-            if board[start.row][col] == value:
+            if board[input_row][col] == value:
                 return False
         for row in range(len(board)):
-            if row == start.row:
-                continue
-            if board[row][start.col] == value:
+            if board[row][input_col] == value:
                 return False
-        for row in range(start.row//3 * 3, (start.row//3+1) * 3):
-            for col in range(start.col//3 * 3, (start.col//3+1) * 3):
-                if row == start.row and col == start.col:
-                    continue
+        for row in range((input_row//3)*3, (input_row//3 + 1)*3):
+            for col in range((input_col//3)*3, (input_col//3 + 1)*3):
                 if board[row][col] == value:
                     return False
         return True

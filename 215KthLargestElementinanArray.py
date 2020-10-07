@@ -2,8 +2,21 @@
 class Solution:
     def findKthLargest(self, nums: List[int], k: int) -> int:
         return sorted(nums, reverse=True)[k-1]
-
-# quick selection
+#heap
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        if not nums:
+            return
+        if k > len(nums) or k < 0:
+            return
+        import heapq
+        heap = []
+        for num in nums:
+            heapq.heappush(heap, num)
+            if len(heap) > k:
+                heapq.heappop(heap)
+        return heap[0]
+# quick selection, Time complexity : O(N) in the average case, O(N^2)in the worst case.
 class Solution:
     def findKthLargest(self, nums: List[int], k: int) -> int:
         if not nums:

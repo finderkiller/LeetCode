@@ -1,4 +1,4 @@
-#DP great:
+#DP:
 class Solution:
     def rob(self, nums: List[int]) -> int:
         if not nums:
@@ -11,22 +11,18 @@ class Solution:
         for idx in range(2, len(table)):
             table[idx] = max(nums[idx] + table[idx-2] , table[idx-1])
         return table[-1]
-#DP1:
+#DP, only using two variable
 class Solution:
     def rob(self, nums: List[int]) -> int:
         if not nums:
             return 0
-        if len(nums) == 1:
-            return nums[0]
-        table = [0 for i in range(len(nums))]
-        for idx in range(len(table)):
-            if idx-2 < 0:
-                table[idx] = nums[idx]
-            elif idx-2 == 0:
-                table[idx] = nums[idx] + table[idx-2]
-            else:
-                table[idx] = nums[idx] + max(table[idx-2], table[idx-3])
-        return max(table[-1], table[-2])
+        last_one = 0
+        last_two = 0
+        for num in nums:
+            cur = max(num+last_two, last_one)
+            last_two = last_one
+            last_one = cur
+        return last_one
 #memo
 class Solution:
     def rob(self, nums: List[int]) -> int:

@@ -6,37 +6,39 @@ class Solution(object):
         :type q: TreeNode
         :rtype: TreeNode
         """
-        if not root:
+        if not self.isCover(root, p):
             return None
-        if not self.find(root,p) or not self.find(root,q):
+        if not self.isCover(root, q):
             return None
-        return self.helper(root, p, q)
-    def helper(self, root, p, q):
-        if root == None:
-            return None
-        if root == p:
+        if self.isCover(p, q):
             return p
-        if root == q:
+        if self.isCover(q, p):
             return q
-        p_in_left = self.find(root.left, p)
-        q_in_left = self.find(root.left, q)
-        if p_in_left != q_in_left:
-            return root
+        return self.helper(root, p, q)
+        
+        
+    def helper(self, node, p, q):
+        if not node:
+            return None
+        p_in_left = self.isCover(node.left, p)
+        q_in_left = self.isCover(node.left, q)
         if p_in_left and q_in_left:
-            return self.helper(root.left, p, q)
+            return self.helper(node.left, p, q)
+        elif not p_in_left and not q_in_left:
+            return self.helper(node.right, p, q)
         else:
-            return self.helper(root.right, p, q)
-    
-    def find(self, node, p):
+            return node
+        
+    def isCover(self, node, target):
         if not node:
             return False
-        if node == p:
+        if node == target:
             return True
-        return self.find(node.right, p) or self.find(node.left, p)
+        return self.isCover(node.left, target) or self.isCover(node.right, target)
 
 
 # return node and is_ancestor
-class Result:
+class Ret:
     def __init__(self, node, is_ancestor):
         self.node = node
         self.is_ancestor = is_ancestor
@@ -48,32 +50,32 @@ class Solution(object):
         :type q: TreeNode
         :rtype: TreeNode
         """
-        result = self.helper(root, p, q)
-        return result.node if result.is_ancestor else None
-        
+        if not root:
+            return None
+        ret = self.helper(root, p, q)
+        return ret.node if ret.is_ancestor else None
+    
     def helper(self, node, p, q):
         if not node:
-            return Result(None, False)
+            return Ret(None, False)
         if node == p and node == q:
-            return Result(node, True)
+            return Ret(node, True)
         
-        left_result = self.helper(node.left, p, q)
-        if left_result.is_ancestor:
-            return left_result
+        left_ret = self.helper(node.left, p, q)
+        right_ret = self.helper(node.right, p, q)
         
-        right_result = self.helper(node.right, p, q)
-        if right_result.is_ancestor:
-            return right_result
-        
-        if left_result.node and right_result.node:
-            return Result(node, True)
+        if left_ret.is_ancestor:
+            return left_ret
+        if right_ret.is_ancestor:
+            return right_ret
+        if left_ret.node and right_ret.node:
+            return Ret(node, True)
         
         if node == p or node == q:
-            result = left_result.node != None or right_result.node != None
-            return Result(node, result)
-        if left_result.node:
-            return left_result
-        if right_result.node:
-            return right_result
-        else:
-            return Result(None, False)
+            is_ancestor = left_ret.node or right_ret.node
+            return Ret(node, is_ancestor)
+        if left_ret.node:
+            return left_ret
+        if right_ret.node:
+            return right_ret
+        return Ret(None, False)

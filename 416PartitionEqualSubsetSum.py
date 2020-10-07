@@ -19,6 +19,24 @@ class Solution:
             sum1 -= nums[idx]
             sum2 += nums[idx]
         return False
+# recursive, memo
+class Solution:
+    def canPartition(self, nums: List[int]) -> bool:
+        total = sum(nums)
+        if total & 1 == 1:
+            return False
+        self.table = {}
+        return self.helper(nums, 0, total>>1)
+    def helper(self, nums, start, target_sum):
+        if target_sum == 0:
+            return True
+        if start >=len(nums):
+            return False
+        if (start, target_sum) in self.table:
+            return self.table[(start, target_sum)]
+        self.table[(start, target_sum)] = self.helper(nums, start+1, target_sum) or self.helper(nums, start+1, target_sum-nums[start])
+        return self.table[(start, target_sum)]
+        
 #DP
 class Solution:
     def canPartition(self, nums: List[int]) -> bool:

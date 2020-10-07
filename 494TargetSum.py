@@ -35,19 +35,13 @@ class Solution:
 #DP with one hashmap
 class Solution:
     def findTargetSumWays(self, nums: List[int], S: int) -> int:
-        if not nums:
-            return 0
-        table = {}
-        table[0] = 1
-        for i in range(0, len(nums)):
-            next_table = {}
-            nums_index = i
-            for sum, count in table.items():
-                prev_value = next_table.get(sum+nums[nums_index], 0)
-                next_table[sum+nums[nums_index]] = count + prev_value
-                
-                prev_value = next_table.get(sum-nums[nums_index], 0)
-                next_table[sum-nums[nums_index]] = count + prev_value
-                table = next_table
-        return table.get(S, 0)
+        cur_table = {}
+        cur_table[0] = 1
+        for num in nums:
+            pre_table = cur_table
+            cur_table = {}
+            for key, value in pre_table.items():
+                cur_table[key+num] = cur_table.get(key+num, 0)+value
+                cur_table[key-num] = cur_table.get(key-num, 0)+value
+        return cur_table[S] if S in cur_table else 0
                 

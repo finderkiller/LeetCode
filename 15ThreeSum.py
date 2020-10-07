@@ -1,24 +1,28 @@
 class Solution:
     def threeSum(self, nums: List[int]) -> List[List[int]]:
-        result = []
-        sorted_nums = sorted(nums)
-        for i in range(len(sorted_nums)-2):
-            if i > 0 and sorted_nums[i] == sorted_nums[i-1]:
+        if not nums:
+            return []
+        nums = sorted(nums)
+        ret = []
+        for idx in range(len(nums)):
+            if idx != 0 and nums[idx] == nums[idx-1]:
                 continue
-            target = 0 - sorted_nums[i]
-            low = i+1
-            high = len(sorted_nums)-1
-            while low < high:
-                if sorted_nums[low] + sorted_nums[high] == target:
-                    result.append([sorted_nums[i], sorted_nums[low], sorted_nums[high]])
-                    while low < high and sorted_nums[low] == sorted_nums[low+1]: #!記得是跟下一個比
-                        low += 1
-                    while low < high and sorted_nums[high] == sorted_nums[high-1]: #!記得是跟前一個比
-                        high -= 1
-                    low += 1
-                    high -= 1
-                elif (sorted_nums[low] + sorted_nums[high]) < target:
-                    low += 1
+            target = 0 - nums[idx]
+            left = idx+1
+            right = len(nums)-1
+            while left < right:
+                if left != idx+1 and nums[left] == nums[left-1]:
+                    left += 1
+                    continue
+                if right != len(nums)-1 and nums[right] == nums[right+1]:
+                    right -= 1
+                    continue
+                if nums[left] + nums[right] < target:
+                    left += 1
+                elif nums[left] + nums[right] > target:
+                    right -= 1
                 else:
-                    high -= 1
-        return result
+                    ret.append([nums[idx], nums[left], nums[right]])
+                    left += 1
+                    right -= 1
+        return ret

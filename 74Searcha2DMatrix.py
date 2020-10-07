@@ -71,5 +71,23 @@ class Solution:
             result = self.helper(matrix, rightupstart, rightupend, target)
         return result
 
-        
-        
+#concate each row
+class Solution:
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        if not matrix:
+            return False
+        width = len(matrix[0])
+        length = len(matrix)
+        left = 0
+        right = width*length - 1
+        while left <= right:
+            mid = left + (right-left)//2
+            row = mid//width
+            col = mid%width
+            if matrix[row][col] == target:
+                return True
+            elif matrix[row][col] > target:
+                right = mid-1
+            else:
+                left = mid+1
+        return False

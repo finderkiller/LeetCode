@@ -1,26 +1,22 @@
-#! memorization
 class Solution:
     def combinationSum4(self, nums: List[int], target: int) -> int:
-        if not nums:
-            return 0
-        table = {}
-        return self.helper(nums, table, target)
-    
-    def helper(self, nums, table, target):
-        if target < 0:
-            return 0
-        if target == 0:
+        self.table = {}
+        return self.helper(nums, 0, target)
+        
+    def helper(self, nums, current, target):
+        if current == target:
             return 1
-        if target in table:
-            return table[target]
-        count = 0
-        for value in nums:
-            remain = target - value
-            count += self.helper(nums, table, remain)
-        table[target] = count
-        return table[target]
+        if current > target:
+            return 0
+        if current in self.table:
+            return self.table[current]
+        result = 0
+        for num in nums:
+            result += self.helper(nums, current+num, target)
+        self.table[current] = result
+        return result
 
-#! DP
+#DP
 class Solution:
     def combinationSum4(self, nums: List[int], target: int) -> int:
         if not nums:

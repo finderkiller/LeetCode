@@ -1,24 +1,34 @@
+class Solution:
+    def change(self, amount: int, coins: List[int]) -> int:
+        return self.helper(coins, 0, 0, amount)
+    
+    def helper(self, coins, start, current, target):
+        if current == target:
+            return 1
+        if current > target:
+            return 0
+        result = 0
+        for idx in range(start, len(coins)):
+            result += self.helper(coins, idx, current+coins[idx], target)
+        return result
 #Memo
 class Solution:
     def change(self, amount: int, coins: List[int]) -> int:
         self.table = {}
-        return self.helper(amount, sorted(coins, reverse=True), 0)
-    def helper(self, amount, coins, start):
-        if amount == 0:
+        return self.helper(coins, 0, 0, amount)
+    
+    def helper(self, coins, start, current, target):
+        if current == target:
             return 1
-        if amount < 0 or len(coins)==start:
+        if current > target:
             return 0
-        if (amount, start) in self.table:
-            return self.table[(amount, start)]
-        ways = 0
-        coin_amount = coins[start]
-        remain_amount = amount
-        while remain_amount >= 0:
-            ways += self.helper(remain_amount, coins, start+1)
-            remain_amount -= coin_amount
-        self.table[(amount, start)] = ways
-        return ways
-
+        if (start, current) in self.table:
+            return self.table[(start, current)]
+        result = 0
+        for idx in range(start, len(coins)):
+            result += self.helper(coins, idx, current+coins[idx], target)
+        self.table[(start, current)] = result
+        return result
 #DP
 class Solution:
     def change(self, amount: int, coins: List[int]) -> int:

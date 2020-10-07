@@ -16,24 +16,15 @@ class Solution:
 #DP  O(nlogm), n is the lengh of nums, m is the length of LIS
 class Solution:
     def lengthOfLIS(self, nums: List[int]) -> int:
-        if not nums:
-            return 0
-        stack = [nums[0]]
-        
-        for idx in range(1, len(nums)):
-            if nums[idx] > stack[-1]:
-                stack.append(nums[idx])
+        stack = []
+        i = 0
+        import bisect
+        while i < len(nums):
+            if not stack or stack[-1] < nums[i]:
+                stack.append(nums[i])
+                i += 1
                 continue
-            insert_index = self.findInsertIndex(stack, 0, len(stack)-1, nums[idx])
-            stack[insert_index] = nums[idx]
+            insert_idx = bisect.bisect_left(stack, nums[i])
+            stack[insert_idx] = nums[i]
+            i+=1
         return len(stack)
-    def findInsertIndex(self, stack, start, end, target):
-        if start > end:
-            return start
-        mid = start + (end-start)//2
-        if stack[mid] == target:
-            return mid
-        if stack[mid] < target:
-            return self.findInsertIndex(stack, mid+1, end, target)
-        else:
-            return self.findInsertIndex(stack, start, mid-1, target)

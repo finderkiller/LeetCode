@@ -1,18 +1,18 @@
 #DP
-class Solution:
-    def countSubstrings(self, s: str) -> int:
+class Solution(object):
+    def countSubstrings(self, s):
         count = 0
         table = [[False for i in range(len(s))] for j in range(len(s))]
         for right in range(len(table)):
-            table[right][right] = True
-            count += 1
-            for left in range(len(table[0])):
-                if left+1 == right and s[left] == s[right]:
+            for left in range(right+1):
+                if left == right:
                     table[right][left] = True
-                    count +=1
-                if left+1 < right and s[left] == s[right] and table[right-1][left+1]:
-                    table[right][left] = True
-                    count +=1
+                elif left+1 == right:
+                    table[right][left] = s[left]==s[right]
+                else:
+                    table[right][left] = s[left]==s[right] and table[right-1][left+1]
+                if table[right][left]:
+                    count += 1
         return count
 #expand
 class Solution:
