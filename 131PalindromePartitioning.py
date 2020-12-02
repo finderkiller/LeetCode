@@ -1,27 +1,35 @@
 # is palindrome from each first index
 class Solution:
     def partition(self, s: str) -> List[List[str]]:
-        prefix = []
+        if not s:
+            return []
+        collect = []
         result = []
-        self.helper(prefix, s, result)
+        self.helper(collect, s, 0, result)
         return result
-    def helper(self, prefix, s, result):
-        if len(s) == 0:
-            result.append(list(prefix))
+        
+    def helper(self, collect, string, start, result):
+        if start == len(string):
+            result.append(list(collect))
             return
-        for idx in range(len(s)):
-            if not self.isPalindrome(s, 0, idx):
+        for idx in range(start, len(string)):
+            tmp = string[start:idx+1]
+            if not self.isPalindrome(tmp):
                 continue
-            prefix.append(s[:idx+1])
-            self.helper(prefix, s[idx+1:], result)
-            prefix.pop()
-            
-    def isPalindrome(self, s, start, end):
-        while start <= end:
-            if s[start] != s[end]:
+            collect.append(tmp)
+            self.helper(collect, string, idx+1, result)
+            collect.pop()
+
+    def isPalindrome(self, string):
+        if not string:
+            return True
+        left = 0
+        right = len(string)-1
+        while left <= right:
+            if string[left] != string[right]:
                 return False
-            start +=1
-            end -=1
+            left += 1
+            right -=1
         return True
 # build palindrome dp table further, and then calculate all partitions
 class Solution:

@@ -17,25 +17,24 @@ class Solution:
             self.helper(collect, num+1, k, target-num, result)
             collect.pop()
 
-#since it has sorted, using start > cur_sum/cur_count
-class Solution(object):
-    def combinationSum3(self, k, n):
-        if n==0:
-            return []
+class Solution:
+    def combinationSum3(self, k: int, n: int) -> List[List[int]]:
         collect = []
         result = []
-        self.helper(collect, 1, k, n, result)
+        self.helper(collect, 1, 0, n, k, result)
         return result
         
-    def helper(self, collect, start, cur_count, cur_sum, result):
-        if cur_sum == 0 and cur_count == 0:
+    def helper(self, collect, start, current, target, k, result):
+        if len(collect) > k:
+            return
+        if current == target and len(collect) == k:
             result.append(list(collect))
             return
-        if cur_sum == 0 or cur_count == 0:
+        if current == target:
             return
-        if start > cur_sum/cur_count:
+        if start * (k-len(collect)) > target-current:
             return
         for num in range(start, 10):
             collect.append(num)
-            self.helper(collect, num+1, cur_count-1, cur_sum-num, result)
+            self.helper(collect, num+1, current+num, target, k, result)
             collect.pop()

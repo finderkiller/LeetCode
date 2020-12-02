@@ -1,22 +1,22 @@
 class Solution:
     def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        if target == 0:
+            return []
+        collect = []
         result = []
-        prefix = []
-        if not candidates:
-            return result
-        self.helper(sorted(candidates), target, prefix, result, 0)
+        nums = sorted(candidates)
+        self.helper(collect, nums, 0, 0, target, result)
         return result
-    def helper(self, candidates, remain, prefix, result, start):
-        if remain < 0:
+    
+    def helper(self, collect, nums, start, current, target, result):
+        if current == target:
+            result.append(list(collect))
             return
-        if remain == 0:
-            result.append(list(prefix))
+        if current > target:
             return
-        for idx, value in enumerate(candidates[start:], start):
-            if idx != start and candidates[idx] == candidates[idx-1]:
+        for idx in range(start, len(nums)):
+            if idx != start and nums[idx] == nums[idx-1]:
                 continue
-            prefix.append(value)
-            self.helper(candidates, remain-value, prefix, result, idx+1)
-            prefix.pop()
-        return
-        
+            collect.append(nums[idx])
+            self.helper(collect, nums, idx+1, current+nums[idx], target, result)
+            collect.pop()

@@ -1,17 +1,31 @@
-# building from the subsets of n-1 nums
+#subproblem from first element
 class Solution:
     def subsets(self, nums: List[int]) -> List[List[int]]:
-        if len(nums) == 0:
-            return [[]]
-        result = []
-        prev_list = self.subsets(nums[1:])
-        value = nums[0]
-        for prev in prev_list:
-            newset = list(prev)
-            newset.insert(0, value)
-            result.append(newset)
-        result += prev_list
+        result = [[]]
+        self.helper(nums, 0, result)
         return result
+    def helper(self, nums, level, result):
+        if level == len(nums):
+            return
+        prev_result = list(result)
+        for element_list in prev_result:
+            result.append(element_list + [nums[level]])
+        self.helper(nums, level+1, result)
+# subproblem from end element
+class Solution:
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        return self.helper(nums, 0)
+        
+    def helper(self, nums, level):
+        if len(nums) == level:
+            return [[]]
+        next_result = self.helper(nums, level+1)
+        result = []
+        for element_list in next_result:
+            new_set = list(element_list)
+            new_set.insert(0, nums[level])
+            result.append(new_set)
+        return result + next_result
 
 # back tracking
 class Solution:

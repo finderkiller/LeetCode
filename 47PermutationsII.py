@@ -40,4 +40,23 @@ class Solution:
                 self.permuteUniqueImpl(next, table, remainder_count-1, result)
                 table[key] += 1
                 
-        return 
+        return
+        
+class Solution:
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        nums = sorted(nums)
+        collect = []
+        result = []
+        self.helper(collect, nums, result)
+        return result
+        
+    def helper(self, collect, nums, result):
+        if len(nums) == 0:
+            result.append(list(collect))
+            return
+        for idx in range(len(nums)):
+            if idx != 0 and nums[idx] == nums[idx-1]:
+                continue
+            collect.append(nums[idx])
+            self.helper(collect, nums[:idx] + nums[idx+1:], result)
+            collect.pop()

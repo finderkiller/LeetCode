@@ -1,4 +1,4 @@
-class HitCounter(object):
+class HitCounter:
 
     def __init__(self):
         """
@@ -6,34 +6,29 @@ class HitCounter(object):
         """
         self.queue = []
         
-    def hit(self, timestamp):
+
+    def hit(self, timestamp: int) -> None:
         """
         Record a hit.
         @param timestamp - The current timestamp (in seconds granularity).
-        :type timestamp: int
-        :rtype: None
         """
         self.queue.append(timestamp)
         
 
-    def getHits(self, timestamp):
+    def getHits(self, timestamp: int) -> int:
         """
         Return the number of hits in the past 5 minutes.
         @param timestamp - The current timestamp (in seconds granularity).
-        :type timestamp: int
-        :rtype: int
         """
-        idx = 0
-        while idx < len(self.queue):
-            if timestamp - self.queue[idx] >= 300:
-                self.queue.pop(0)
-                continue
-            idx += 1
-        return idx
+        if timestamp < 0:
+            return 0
+        while self.queue and self.queue[0]+300 <= timestamp:
+            self.queue.pop(0)
+        return len(self.queue)
         
 
 #follow up
-class HitCounter(object):
+class HitCounter:
 
     def __init__(self):
         """
@@ -41,31 +36,28 @@ class HitCounter(object):
         """
         self.queue = []
         
-    def hit(self, timestamp):
+
+    def hit(self, timestamp: int) -> None:
         """
         Record a hit.
         @param timestamp - The current timestamp (in seconds granularity).
-        :type timestamp: int
-        :rtype: None
         """
-        if len(self.queue) == 0 or self.queue[-1][0] != timestamp:
-            self.queue.append((timestamp, 1))
+        if len(self.queue) != 0 and self.queue[-1][0] == timestamp:
+            self.queue[-1] = (timestamp, self.queue[-1][1]+1)
             return
-        self.queue[-1] = (self.queue[-1][0], self.queue[-1][1]+1)
+        self.queue.append((timestamp, 1))
+        
 
-    def getHits(self, timestamp):
+    def getHits(self, timestamp: int) -> int:
         """
         Return the number of hits in the past 5 minutes.
         @param timestamp - The current timestamp (in seconds granularity).
-        :type timestamp: int
-        :rtype: int
         """
-        idx = 0
-        count = 0
-        while idx < len(self.queue):
-            if timestamp - self.queue[idx][0] >= 300:
-                self.queue.pop(0)
-                continue
-            count += self.queue[idx][1]
-            idx += 1
-        return count
+        if timestamp < 0:
+            return 0
+        while self.queue and self.queue[0][0]+300 <= timestamp:
+            self.queue.pop(0)
+        result = 0
+        for time, count in self.queue:
+            result += count
+        return result
