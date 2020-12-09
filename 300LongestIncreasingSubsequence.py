@@ -28,3 +28,14 @@ class Solution:
             stack[insert_idx] = nums[i]
             i+=1
         return len(stack)
+#DP  O(nlogm), n is the lengh of nums, m is the length of LIS
+class Solution:
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        stack = []
+        import bisect
+        for num in nums:
+            insert_point = bisect.bisect_left(stack, num)
+            if insert_point < len(stack):
+                stack.pop(insert_point)
+            stack.insert(insert_point, num)
+        return len(stack)

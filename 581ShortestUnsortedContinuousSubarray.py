@@ -5,16 +5,15 @@ class Solution:
             return 0
         result = 0
         start = len(nums)-1
-        for idx in range(1, len(nums)):
-            if nums[idx] >= nums[idx-1]:
-                continue
-            j = idx
-            while j > 0 and nums[j] < nums[j-1]:
-                self.swap(nums, j ,j-1)
-                j -= 1
-            start = min(start, j)
-            result = max(result, idx-start+1)
+        for idx in range(1, len(nums)):      
+            for idj in range(idx, 0, -1):
+                if nums[idj-1] > nums[idj]:
+                    self.swap(nums, idj, idj-1)
+                    start = min(start, idj-1)
+                    result = max(result, idx-start+1)
         return result
+                    
+        
     def swap(self, nums, pos1, pos2):
         tmp = nums[pos1]
         nums[pos1] = nums[pos2]
