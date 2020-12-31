@@ -23,7 +23,7 @@ class Solution(object):
         for idx in range(1, len(nums)):
             for idj in range(idx, 0, -1):
                 if nums[idj-1] > nums[idj]:
-                    self.swap()
+                    self.swap(nums, idj-1, idj)
                 else:
                     break
             
