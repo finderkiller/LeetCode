@@ -45,5 +45,15 @@ class Solution:
             slow = nums[slow]
             fast = nums[fast]
         return slow
+#sol5: cyclic sort
+class Solution:
+    def findDuplicate(self, nums: List[int]) -> int:
+        if not nums:
+            return
+        for num in nums:
+            next_idx = abs(num)
+            if nums[next_idx] < 0:
+                return abs(num)
+            nums[next_idx] = -nums[next_idx]
             
         

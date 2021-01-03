@@ -9,7 +9,7 @@ class Solution:
         for idx in range(len(nums)-k+1):
             result.append(max(nums[idx:idx+k]))
         return result
-#O(nlogn)
+#O(nlogk)
 class Solution:
     def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
         if not nums:

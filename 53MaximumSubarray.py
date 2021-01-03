@@ -2,12 +2,12 @@ class Solution:
     def maxSubArray(self, nums: List[int]) -> int:
         if not nums:
             return 0
-        max_sum = nums[0]
-        result = nums[0]
-        for idx in range(1, len(nums)):
-            if max_sum + nums[idx] < nums[idx]:
-                max_sum = nums[idx]
+        cur_sum = 0 
+        max_sum = -sys.maxsize-1
+        for data in nums:
+            if cur_sum + data < data:
+                cur_sum = data
             else:
-                max_sum += nums[idx]
-            result =max(result, max_sum)
-        return result
+                cur_sum += data
+            max_sum = max(max_sum, cur_sum)
+        return max_sum
