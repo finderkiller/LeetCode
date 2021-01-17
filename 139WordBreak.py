@@ -1,4 +1,4 @@
-# top down
+# top down, time complexity: O(2^(n-1)), call stack: O(n)
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
         if not s:
@@ -14,7 +14,7 @@ class Solution:
                 return True
         return False
 
-# memo
+# memo, time complexity: O(n^2) since (n) + (n-1) + (n-2) + ... + 1 = n(n+1)/2, extra space: O(n)
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
         if not s:
@@ -34,7 +34,21 @@ class Solution:
                 return True
         table[start] = False
         return False
-#DP
+#DP direction is the reversal of memo
+class Solution:
+    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+        wordDict = set(wordDict)
+        self.table = [False for i in range(len(s)+1)]
+        self.table[-1] = True
+        for start in range(len(self.table)-2, -1, -1):
+            for end in range(start, len(s)):
+                string = s[start:end+1]
+                if string in wordDict and self.table[end+1]:
+                    self.table[start] = True
+                    break
+        return self.table[0]
+
+#DP direction is the same as memo
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
         if not s:

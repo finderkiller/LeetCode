@@ -64,22 +64,48 @@ class Solution(object):
                 result.append(string + " " + forward)
         self.table[start] = result
         return result
-#DP
+#DP, direction is the reversal of memo
 class Solution(object):
     def wordBreak(self, s, wordDict):
-        dict = set(wordDict)
-        table = [[] for i in range(len(s)+1)]
-        table[0] = [""]
-        
-        for idx in range(1, len(table)):
+        """
+        :type s: str
+        :type wordDict: List[str]
+        :rtype: List[str]
+        """
+        self.wordDict = set(wordDict)
+        self.table = [[] for i in range(len(s)+1)]
+        self.table[-1].append("")
+        for start in range(len(s)-1, -1, -1):
+            for idx in range(start, len(s)):
+                string = s[start:idx+1]
+                if string not in self.wordDict:
+                    continue
+                for forward in self.table[idx+1]:
+                    if len(forward) == 0:
+                        self.table[start].append(string)
+                    else:
+                        self.table[start].append(string + " " + forward)
+        return self.table[0]
+#DP, direction is the same as memo
+class Solution(object):
+    def wordBreak(self, s, wordDict):
+        """
+        :type s: str
+        :type wordDict: List[str]
+        :rtype: List[str]
+        """
+        self.wordDict = set(wordDict)
+        self.table = [[] for i in range(len(s)+1)]
+        self.table[0].append("")
+        for idx in range(1, len(self.table)):
             string_end = idx-1
             for string_start in range(string_end, -1, -1):
                 string = s[string_start:string_end+1]
-                if string not in dict:
+                if string not in self.wordDict:
                     continue
-                for prev_string in table[idx-len(string)]:
-                    if not prev_string:
-                        table[idx].append(string)
-                        continue
-                    table[idx].append(prev_string + " " + string)
-        return table[-1]
+                for backward in self.table[string_start]:
+                    if len(backward) == 0:
+                        self.table[idx].append(string)
+                    else:
+                        self.table[idx].append(backward + " " + string)
+        return self.table[-1]
