@@ -1,27 +1,22 @@
-class Solution(object):
-    def threeSumClosest(self, nums, target):
-        """
-        :type nums: List[int]
-        :type target: int
-        :rtype: int
-        """
-        if not nums:
-            return target
+class Solution:
+    def threeSumClosest(self, nums: List[int], target: int) -> int:
+        if len(nums) < 3:
+            return
         nums = sorted(nums)
+        min_diff = sys.maxsize
         result = 0
-        diff = sys.maxsize
-        for first_idx in range(len(nums)-2):
-            start = first_idx+1
-            end = len(nums)-1
-            while start < end:
-                threesum = nums[first_idx] + nums[start] + nums[end]
-                if threesum > target:
-                    end -= 1
-                elif threesum < target:
-                    start += 1
-                else:
-                    return threesum
-                if abs(threesum-target) < diff:
-                    diff = abs(threesum-target)
-                    result = threesum
+        for idx in range(len(nums)-2):
+            left = idx + 1
+            right = len(nums)-1
+            while left < right:
+                total = nums[left] + nums[right] + nums[idx]
+                if  total == target:
+                    return nums[left] + nums[right] + nums[idx]
+                if abs(total - target) < min_diff:
+                    min_diff = abs(total - target)
+                    result = total
+                if nums[left] + nums[right] < target - nums[idx]:
+                    left += 1
+                elif nums[left] + nums[right] > target - nums[idx]:
+                    right -= 1
         return result

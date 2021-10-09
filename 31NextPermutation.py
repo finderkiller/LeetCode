@@ -3,34 +3,21 @@ class Solution:
         """
         Do not return anything, modify nums in-place instead.
         """
-        if nums == None or len(nums) == 0:
-            return
-        if len(nums) == 1:
-            return
-        smallFirst = -1
-        for i in range(len(nums)-2, -1, -1):
-            if nums[i] < nums[i+1]:
-                smallFirst = i
+        first_small_idx = -1
+        for idx in range(len(nums)-2, -1, -1):
+            if nums[idx] < nums[idx+1]:
+                first_small_idx = idx
                 break
-        if smallFirst == -1:
+        if first_small_idx == -1:
             nums.reverse()
             return
-        largeFirst = -1
-        for j in range(len(nums)-1, smallFirst, -1):
-            if nums[j] > nums[smallFirst]:
-                largeFirst = j
-                break
-        tmp = nums[smallFirst]
-        nums[smallFirst] = nums[largeFirst]
-        nums[largeFirst] = tmp
-        self.reverse(nums, smallFirst+1, len(nums)-1)
         
-        return
-    def reverse(self, nums, i, j):
-        while(i<j):
-            tmp = nums[i]
-            nums[i] = nums[j]
-            nums[j] = tmp
-            i += 1
-            j -= 1
-        return 
+        first_larger_idx = -1
+        for idx in range(len(nums)-1, -1, -1):
+            if nums[idx] > nums[first_small_idx]:
+                first_larger_idx = idx
+                break
+        tmp = nums[first_small_idx]
+        nums[first_small_idx] = nums[first_larger_idx]
+        nums[first_larger_idx] = tmp
+        nums[first_small_idx+1:] = reversed(nums[first_small_idx+1:])

@@ -1,3 +1,4 @@
+# time: O(logn), space: depth, O(logn)
 class Solution:
     def myPow(self, x: float, n: int) -> float:
         if n<0:

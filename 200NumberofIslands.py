@@ -19,7 +19,7 @@ class Solution:
         self.helper(grid, row, col+1)
         self.helper(grid, row, col-1)
 
-#BFS, O(m*n), space: O(min(m, n))
+#BFS, O(m*n), space: O(w), depends queue's length
 class Solution:
     def numIslands(self, grid: List[List[str]]) -> int:
         if not grid:

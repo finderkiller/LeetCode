@@ -23,4 +23,24 @@ class Solution:
         self.helper(node.right, prefix)
         prefix.pop()
         
+
+class Solution:
+    def sumNumbers(self, root: TreeNode) -> int:
+        if not root:
+            return
+        collection = []
+        return self.helper(collection, root)
         
+    def helper(self, collection, node):
+        if not node:
+            return 0
+        collection.append(node.val)
+        result = 0
+        if not node.left and not node.right:
+            result = int("".join(map(str, collection)))
+            collection.pop()
+            return result
+        result += self.helper(collection, node.left)
+        result += self.helper(collection, node.right)
+        collection.pop()
+        return result

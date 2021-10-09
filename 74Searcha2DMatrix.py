@@ -3,19 +3,34 @@ class Solution:
     def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
         if not matrix:
             return False
-        width = len(matrix[0])
-        height = len(matrix)
-        col = width - 1
+        col = len(matrix[0])-1
         row = 0
-        
-        while col >= 0 and row < height:
+        while col >= 0 and row < len(matrix):
             if matrix[row][col] == target:
                 return True
-            elif matrix[row][col] > target:
-                col -= 1
-            else:
+            elif matrix[row][col] < target:
                 row += 1
+            else:
+                col -= 1
         return False
+
+# rightup-to-leftdown recursive
+class Solution:
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        if not matrix:
+            return False
+        return self.helper(matrix, 0, len(matrix[0])-1, target)
+        
+    def helper(self, matrix, row, col, target):
+        if row >= len(matrix) or col < 0:
+            return False
+        if matrix[row][col] == target:
+            return True
+        elif matrix[row][col] < target:
+            return self.helper(matrix, row+1, col, target)
+        else:
+            return self.helper(matrix, row, col-1, target)
+
 #對角線的binary search
 class Coordinate:
     def __init__(self, row, col):

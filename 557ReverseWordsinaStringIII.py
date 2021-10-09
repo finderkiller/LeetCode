@@ -1,18 +1,8 @@
-class Solution(object):
-    def reverseWords(self, s):
-        """
-        :type s: str
-        :rtype: str
-        """
-        output = ""
-        start = 0
-        for idx in range(len(s)):
-            if s[idx] == " ":
-                tmp = str(s[start:idx][::-1])
-                output += tmp + " "
-                start = idx+1
-        tmp = str(s[start:][::-1])
-        output += tmp
-        return output
-            
-        
+class Solution:
+    def reverseWords(self, s: str) -> str:
+        if not s:
+            return ""
+        array = s.split()
+        for idx in range(len(array)):
+            array[idx] = array[idx][::-1]
+        return " ".join(array)

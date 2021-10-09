@@ -1,4 +1,4 @@
-# linear search
+# linear search, O(n)
 class Solution:
     def mySqrt(self, x: int) -> int:
         if x == 0 or x == 1:
@@ -7,7 +7,7 @@ class Solution:
         while i * i <= x:
             i+=1
         return i-1
-# binary search
+# binary search, O(logn)
 class Solution:
     def mySqrt(self, x: int) -> int:
         if x == 0 or x == 1:

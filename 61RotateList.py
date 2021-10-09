@@ -7,17 +7,14 @@
 class Solution:
     def rotateRight(self, head: ListNode, k: int) -> ListNode:
         if not head:
-            return None
-        length = self.length(head)
-        if length == 1 or length == k:
-            return head
-        if k > length:
-            k = k % length
+            return
+        length =self.getLength(head)
+        k = k % length
         p1 = p2 = head
-        for idx in range(k):
+        while k > 0:
             p2 = p2.next
-        
-        while p2.next != None:
+            k -= 1
+        while p2 and p2.next != None:
             p1 = p1.next
             p2 = p2.next
         p2.next = head
@@ -25,7 +22,12 @@ class Solution:
         p1.next = None
         return head
             
-    def length(self,node):
-        if node == None:
+        
+    def getLength(self, cur):
+        if not cur:
             return 0
-        return self.length(node.next)+1
+        length = 0
+        while cur:
+            length += 1
+            cur = cur.next
+        return length

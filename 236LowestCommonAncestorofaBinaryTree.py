@@ -1,3 +1,4 @@
+#time: O(nlogn)
 class Solution(object):
     def lowestCommonAncestor(self, root, p, q):
         """
@@ -37,7 +38,7 @@ class Solution(object):
         return self.isCover(node.left, target) or self.isCover(node.right, target)
 
 
-# return node and is_ancestor
+#time: O(n) return node and is_ancestor
 class Ret:
     def __init__(self, node, is_ancestor):
         self.node = node

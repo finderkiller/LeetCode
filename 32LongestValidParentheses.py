@@ -27,12 +27,12 @@ class Solution:
             return 0
         table = [0 for i in range(len(s))]
         max_length = 0
-        for idx in range(1, len(table)):
-            if s[idx] == ")":
-                if s[idx-1] == "(":
-                    table[idx]=table[idx-2]+2 if idx-2>=0 else 2
-                elif idx-1 >= table[idx-1] and s[idx-1-table[idx-1]] == "(":
-                        table[idx] = table[idx-1]+2+table[idx-2-table[idx-1]] if idx-2>=table[idx-1] else table[idx-1]+2
-                max_length = max(max_length, table[idx])
+        for idx, char in enumerate(s):
+            if char == '(':
+                continue
+            elif idx-1 >= 0 and s[idx-1] == '(':
+                table[idx] = table[idx-2]+2 if idx-2 >=0 else 2
+            elif idx-table[idx-1]-1 >= 0 and s[idx-table[idx-1]-1] == '(':
+                table[idx] = table[idx-table[idx-1]-2]+table[idx-1]+2 if idx-table[idx-1]-2 >=0 else table[idx-1]+2
+            max_length = max(max_length, table[idx])
         return max_length
-                    

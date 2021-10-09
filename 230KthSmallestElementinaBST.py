@@ -15,20 +15,21 @@ class Solution:
 #time: O(k), extra space: O(1), callstack: O(logn)
 class Solution:
     def kthSmallest(self, root: TreeNode, k: int) -> int:
-        self.value = 0
-        self.k = k
-        self.inorder(root)
-        return self.value
+        self.result = 0
+        self.index = 0
+        self.helper(root, k)
+        return self.result
         
-    def inorder(self, node):
+    def helper(self, node, k):
         if not node:
-            return False
-        if self.inorder(node.left):
+            return
+        if self.helper(node.left, k):
             return True
-        self.k -= 1
-        if self.k == 0:
-            self.value = node.val
+        self.index += 1
+        if self.index == k:
+            self.result = node.val
             return True
-        if self.inorder(node.right):
+        if self.helper(node.right, k):
             return True
-        return False
+
+# follow up: insert and delete frequently, remember left.size in each node

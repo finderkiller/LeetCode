@@ -6,42 +6,33 @@
 
 class Solution:
     def reverseKGroup(self, head: ListNode, k: int) -> ListNode:
-        if head == None:
-            return 
-        dummy = ListNode(0)
+        if not head:
+            return
+        dummy = ListNode(None)
         dummy.next = head
         pre = dummy
         cur = head
-        while cur != None:          
-            next_start = self.findNextStart(cur, k)
-            pre.next = self.reverse(cur, next_start,k)
+        while cur != None:
+            if not self.is_reversible(cur, k):
+                break
+            rev_head, next_cur = self.reverse(None, cur, k)
+            pre.next = rev_head
+            cur.next = next_cur   #cur is rev_tail
             pre = cur
-            cur = next_start
+            cur = next_cur
         return dummy.next
     
-    def findNextStart(self, cur, k):
-        if cur == None:
-            return None
-        if k == 0:
-            return cur
-        return self.findNextStart(cur.next, k-1)
+    def reverse(self, pre, cur, k):
+        while k > 0:
+            next_cur = cur.next
+            cur.next = pre
+            pre = cur
+            cur = next_cur
+            k -= 1
+        return (pre, cur)
         
-    def reverse(self, cur, next_start, k):
-        if cur == None:
-            return
-        count = 0
-        tmp = cur
-        while tmp != None and count !=k:
-            count += 1
-            tmp = tmp.next
-        if count != k:
-            return cur
-        ret = self.helper(cur, next_start, k)
-        return ret
-    def helper(self, cur, prev, k):
-        if k == 0:
-            return prev
-        n = cur.next
-        cur.next = prev
-        return self.helper(n, cur, k-1)
-        
+    def is_reversible(self, cur, k):
+        while cur != None and k > 0:
+            cur = cur.next
+            k -= 1
+        return k == 0

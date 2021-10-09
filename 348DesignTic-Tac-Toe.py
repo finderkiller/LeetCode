@@ -1,4 +1,4 @@
-#brute force
+#brute force, time: O(m*n) for on move, space: O(1)
 class TicTacToe:
 
     def __init__(self, n: int):
@@ -54,7 +54,7 @@ class TicTacToe:
                 break
         return connection
     
-#O(n)
+#time: O(1) for one move, O(n) for n trail, space: O(m+n)
 class TicTacToe:
 
     def __init__(self, n: int):

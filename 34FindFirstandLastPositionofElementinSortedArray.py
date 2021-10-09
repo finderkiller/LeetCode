@@ -1,40 +1,30 @@
 class Solution:
     def searchRange(self, nums: List[int], target: int) -> List[int]:
-        if nums == None or len(nums) == 0:
-            return [-1, -1]
-        first = self.findFirst(nums, target)
-        if first == -1:
-            return [-1, -1]
-        last = self.findLast(nums, target)
-        return [first, last]
-    
-    def findFirst(self, nums, target):
-        start = 0
-        end = len(nums) -1
-        while start <= end:
-            mid = (end-start)//2 + start
-            if nums[mid] == target:
-                if mid-1 >= 0 and nums[mid-1] == target:
-                    end = mid - 1
-                else:
-                    return mid
-            elif nums[mid] < target:
-                start = mid+1
+        return [self.findStart(nums, 0, len(nums)-1, target), self.findLast(nums, 0, len(nums)-1, target)]
+        
+    def findStart(self, nums, start, end, target):
+        if start > end:
+            return -1
+        mid = start + (end-start)//2
+        if nums[mid] == target:
+            if mid-1 >=0 and nums[mid-1] == target:
+                return self.findStart(nums, start, mid-1, target)
             else:
-                end = mid-1
-        return -1
-    def findLast(self, nums, target):
-        start = 0
-        end = len(nums) -1
-        while start <= end:
-            mid = (end-start)//2 + start
-            if nums[mid] == target:
-                if mid+1 <= len(nums)-1 and nums[mid+1] == target:
-                    start = mid + 1
-                else:
-                    return mid
-            elif nums[mid] < target:
-                start = mid+1
+                return mid
+        elif nums[mid] > target:
+            return self.findStart(nums, start, mid-1, target)
+        else:
+            return self.findStart(nums, mid+1, end, target)
+    def findLast(self, nums, start, end, target):
+        if start > end:
+            return -1
+        mid = start + (end-start)//2
+        if nums[mid] == target:
+            if mid+1 < len(nums) and nums[mid+1] == target:
+                return self.findLast(nums, mid+1, end, target)
             else:
-                end = mid-1
-        return -1
+                return mid
+        elif nums[mid] > target:
+            return self.findLast(nums, start, mid-1, target)
+        else:
+            return self.findLast(nums, mid+1, end, target)

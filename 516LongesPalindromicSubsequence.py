@@ -1,5 +1,5 @@
-#recursive, time:O(2^n), space:O(n)
-#recursive, memo, time:(n^2), space: O(n^2)
+#recursive, time:O(2^n), space: depth O(n)
+#recursive, memo, time:O(n^2), space: O(n^2)
 class Solution:
     def longestPalindromeSubseq(self, s: str) -> int:
         self.table = {}
