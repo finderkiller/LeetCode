@@ -1,35 +1,37 @@
-#time:O(n), n is the number of tickets, space: O(n), child_table
+#DFS: time: O(d^E), E is flights, d is the max of departure from an airport
+#space: O(E)
+"""
+1. build tickets table, value: count of tickets
+2. traverse, starting from JFK, if no tickets, just skip
+3. if len(result) == len(tickets)+1, meaning use all of ticket, then return
+"""
 class Solution:
     def findItinerary(self, tickets: List[List[str]]) -> List[str]:
-        if not tickets:
-            return []
-        child_table = {}
-        for ticket in tickets:
-            src = ticket[0]
-            des = ticket[1]
-            if src not in child_table:
-                child_table[src] = {}
-            if des not in child_table[src]:
-                child_table[src][des] = 0
-            child_table[src][des] += 1
-        self.result = []
-        self.result.append("JFK")
-        if not self.helper(tickets, "JFK", child_table, 0):
-            return []
-        return self.result
-    
-    def helper(self, tickets, src, child_table, level):
-        if len(tickets) == level:
+        self.depend_table = {}
+        for src, des in tickets:
+            if src not in self.depend_table:
+                self.depend_table[src] = {}
+            if des not in self.depend_table[src]:
+                self.depend_table[src][des] = 0
+            self.depend_table[src][des] += 1
+        result = []
+        result.append("JFK")
+        level = len(tickets)+1
+        self.helper("JFK", result, level)
+        return result
+        
+    def helper(self, src, result, level):
+        if len(result) == level:
             return True
-        if src not in child_table:
+        if src not in self.depend_table:
             return False
-        for des in sorted(child_table[src].keys()):
-            if child_table[src][des] == 0:
+        for des in sorted(self.depend_table[src].keys()):
+            if self.depend_table[src][des] == 0:
                 continue
-            child_table[src][des] -= 1
-            self.result.append(des)
-            if self.helper(tickets, des, child_table, level+1):
+            self.depend_table[src][des] -= 1
+            result.append(des)
+            if self.helper(des, result, level):
                 return True
-            self.result.pop()
-            child_table[src][des] += 1
+            result.pop()
+            self.depend_table[src][des] += 1
         return False

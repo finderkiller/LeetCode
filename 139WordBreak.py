@@ -1,4 +1,4 @@
-# top down, time complexity: O(2^(n-1)), call stack: O(n)
+# top down, time complexity: O(2^n), call stack: O(n)
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
         if not s:

@@ -1,3 +1,4 @@
+#time: O(m*n*3^L), m rows, n cols, L words length, depth: O(L)
 class Solution:
     def exist(self, board: List[List[str]], word: str) -> bool:
         if not board or not word:

@@ -1,3 +1,5 @@
+#time: O(N^(T/m)), N is number of candidates, T is the target, m is the minmum number in candidates
+#space: for collect: O(T/m), depth: O(T/m)
 class Solution:
     def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
         if not candidates or target <= 0:

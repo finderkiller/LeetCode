@@ -25,7 +25,7 @@ class Solution:
                     
         return result if len(result) == numCourses else []
 
-#DFS
+#DFS time:O(v+E), space: O(V+E), depth: O(V)
 class Solution:
     def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
         self.status_table = ["unvisited" for i in range(numCourses)]

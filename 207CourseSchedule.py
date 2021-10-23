@@ -1,4 +1,4 @@
-#DFS
+#DFS time:O(v+E), space: O(V+E), depth: O(V)
 class Solution:
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
         self.child_table = {}

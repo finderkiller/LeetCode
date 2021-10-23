@@ -1,3 +1,4 @@
+#time: O(n)
 """
 1. find row, col
 2. traverse string

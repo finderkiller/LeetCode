@@ -1,3 +1,5 @@
+#time: O(N*M), N is equation, M is query
+#space: depth: O(N), extra: O(N+M)
 class Solution(object):
     def calcEquation(self, equations, values, queries):
         """

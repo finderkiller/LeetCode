@@ -1,3 +1,4 @@
+#time: O(n*L), space: O(n*L)
 class Solution(object):
     def alienOrder(self, words):
         """
