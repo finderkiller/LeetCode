@@ -13,21 +13,7 @@ class Solution:
                     table[idx] = max(table[idx], table[nums_idx] + 1)
             max_length = max(max_length, table[idx])
         return max_length
-#DP  O(nlogm), n is the lengh of nums, m is the length of LIS
-class Solution:
-    def lengthOfLIS(self, nums: List[int]) -> int:
-        stack = []
-        i = 0
-        import bisect
-        while i < len(nums):
-            if not stack or stack[-1] < nums[i]:
-                stack.append(nums[i])
-                i += 1
-                continue
-            insert_idx = bisect.bisect_left(stack, nums[i])
-            stack[insert_idx] = nums[i]
-            i+=1
-        return len(stack)
+
 #DP  O(nlogm), n is the lengh of nums, m is the length of LIS
 class Solution:
     def lengthOfLIS(self, nums: List[int]) -> int:

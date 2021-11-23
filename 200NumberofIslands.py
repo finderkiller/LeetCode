@@ -1,4 +1,30 @@
-#DFS O(m*n), space: call stack O(m*n)
+#DFS O(m*n), depth: O(m*n), extra: O(m*n)
+class Solution:
+    def numIslands(self, grid: List[List[str]]) -> int:
+        if not grid:
+            return 0
+        result = 0
+        self.visited = set()
+        for row in range(len(grid)):
+            for col in range(len(grid[0])):
+                if grid[row][col] == "1" and (row, col) not in self.visited:
+                    result += 1
+                    self.helper(grid, row, col)
+        return result
+    def helper(self, grid, row, col):
+        if row < 0 or col < 0 or row >= len(grid) or col >= len(grid[0]):
+            return
+        if grid[row][col] == "0":
+            return
+        if (row, col) in self.visited:
+            return
+        self.visited.add((row, col))
+        self.helper(grid, row+1, col)
+        self.helper(grid, row-1, col)
+        self.helper(grid, row, col+1)
+        self.helper(grid, row, col-1)
+
+#DFS O(m*n), depth: O(m*n)
 class Solution:
     def numIslands(self, grid: List[List[str]]) -> int:
         if not grid:

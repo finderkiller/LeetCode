@@ -1,17 +1,19 @@
+#time: O(m*n)
+#space: O(m*n)
 class Solution:
     def numDistinctIslands(self, grid: List[List[int]]) -> int:
         if not grid:
             return []
-        uniq_island = set()
+        result = set()
         for row in range(len(grid)):
             for col in range(len(grid[0])):
                 if grid[row][col] == 0:
                     continue
-                self.collect = set()
+                self.collection = []
                 self.helper(grid, row, col, row, col)
-                uniq_island.add(frozenset(self.collect))
-        return len(uniq_island)
-    
+                result.add(tuple(self.collection))
+        return len(result)
+        
     def helper(self, grid, row, col, ori_row, ori_col):
         if row < 0 or row >= len(grid):
             return
@@ -20,8 +22,8 @@ class Solution:
         if grid[row][col] == 0:
             return
         grid[row][col] = 0
-        self.collect.add((row-ori_row, col-ori_col))
-        self.helper(grid, row+1, col, ori_row, ori_col)
+        self.collection.append((row-ori_row, col-ori_col))
         self.helper(grid, row-1, col, ori_row, ori_col)
-        self.helper(grid, row, col+1, ori_row, ori_col)
+        self.helper(grid, row+1, col, ori_row, ori_col)
         self.helper(grid, row, col-1, ori_row, ori_col)
+        self.helper(grid, row, col+1, ori_row, ori_col)

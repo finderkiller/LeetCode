@@ -1,4 +1,5 @@
 # recursive
+# time: O(2^n), depth: O(n)
 class Solution:
     def numTrees(self, n: int) -> int:
         return self.helper(n)
@@ -13,6 +14,7 @@ class Solution:
         return result
 
 # recursive, memo
+# time: O(n^2), depth: O(n), space: O(n)
 class Solution:
     def numTrees(self, n: int) -> int:
         self.table = {}
@@ -31,14 +33,13 @@ class Solution:
         return result
 
 # bottom-up
+# time: O(n^2), space: O(n)
 class Solution:
     def numTrees(self, n: int) -> int:
-        if n == 0:
-            return 0
         table = [0 for i in range(n+1)]
         table[0] = 1
-        table[1] = 1
-        for idx in range(2, len(table)):
-            for left_num in range(idx):
-                table[idx] += table[left_num] * table[idx-left_num-1]
-        return table[n]
+        table[1] =1
+        for n in range(2, len(table)):
+            for idx in range(n):
+                table[n] += table[idx] * table[n-idx-1]
+        return table[-1]

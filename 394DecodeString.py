@@ -1,25 +1,34 @@
+#recursive
+#time: O(n), depth: O(n)
 class Solution:
     def decodeString(self, s: str) -> str:
-        if not s:
-            return ""
         self.idx = 0
         return self.helper(s)
+        
     def helper(self, s):
         result = ""
-        while self.idx < len(s) and s[self.idx] != "]":
-            if s[self.idx]<"0" or s[self.idx] >"9":
-                result += s[self.idx]
+        cur_num = 0
+        while self.idx < len(s):
+            letter = s[self.idx]
+            if self.isdigit(letter):
+                cur_num = 10*cur_num + int(letter)
                 self.idx += 1
-                continue
-            freq = 0
-            while s[self.idx] >= "0" and s[self.idx] <="9":
-                freq = freq*10 + int(s[self.idx])
+            elif letter == "[":
                 self.idx += 1
-            self.idx += 1
-            string = self.helper(s)
-            self.idx+=1
-            for idx in range(freq):
-                result += string
+                forword = self.helper(s)
+                count = cur_num
+                while count > 0:
+                    result += forword
+                    count -= 1
+                cur_num = 0
+            elif letter == "]":
+                self.idx += 1
+                return result
+            else:
+                result += letter
+                self.idx += 1
         return result
-            
+
+def isdigit(self, letter):
+        return ord(letter) >= ord('0') and ord(letter) <= ord('9')   
         

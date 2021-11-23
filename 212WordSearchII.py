@@ -1,4 +1,4 @@
-#sol1: brute force, time: O(m*n*3^L), depth: O(L), extra: O(w*L)
+#sol1: brute force, time: O(w*m*n*3^L), depth: O(L), extra: O(w*L)
 class Solution:
     def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
         if not board:
@@ -36,7 +36,7 @@ class Solution:
         board[row][col] = char
         return result
 
-#sol2: Trie, time: O(m*n), depth: O(L), extra: O(w*L)
+#sol2: Trie, time: O(m*n*3^L), depth: O(L), extra: O(w*L)
 class Node:
     def __init__(self):
         self.children = [None]*26

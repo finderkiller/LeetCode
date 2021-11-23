@@ -1,46 +1,101 @@
-#sol1: step by step clear all leaf nodes, using postorder in each step
+#sol1: delete old leaves first, step by step clear all leaf nodes, using postorder in each step
 #time: O(nlogn), space: O(n), depth: O(logn)
 class Solution:
     def findLeaves(self, root: TreeNode) -> List[List[int]]:
-        if not root:
-            return []
         result = []
-        dummy_head = TreeNode(0)
-        dummy_head.left = root
-        while dummy_head.left:
-            result.append(self.helper(dummy_head)[0])
+        collection = []
+        if self.helper(root, collection):
+            result.append(collection)
+            return result
+        result.append(collection)
+        result += self.findLeaves(root)
         return result
-        
-    def helper(self, node):
+    
+    def helper(self, node, collection):
         if not node:
-            return ([], False)
-        if node.left == None and node.right == None:
-            return ([node.val], True)
-        left_leaves, is_left_leaves = self.helper(node.left)
-        right_leaves, is_right_leaves = self.helper(node.right)
-        if is_left_leaves:
+            return False
+        if not node.left and not node.right:
+            collection.append(node.val)
+            return True
+        left_is_leaf = self.helper(node.left, collection)
+        right_is_leaf = self.helper(node.right, collection)
+        if left_is_leaf:
             node.left = None
-        if is_right_leaves:
+        if right_is_leaf:
             node.right = None
-        return (left_leaves + right_leaves, False)
+        return False
 
-#sol2: postorder DFS, then clear after collection
-#time: O(n), space: O(n), depth: O(logn)
+class Solution:
+    def findLeaves(self, root: TreeNode) -> List[List[int]]:
+        result = []
+        root_is_leaf = False
+        while not root_is_leaf:
+            collection = []
+            root_is_leaf = self.postorder(root, collection)
+            result.append(collection)
+        return result
+    
+    def postorder(self, node, collection):
+        if not node:
+            return False
+        if not node.left and not node.right:
+            collection.append(node.val)
+            return True
+        left_is_leaf = self.postorder(node.left, collection)
+        right_is_leaf = self.postorder(node.right, collection)
+        if left_is_leaf:
+            node.left = None
+        if right_is_leaf:
+            node.right = None
+        return False
+
 class Solution:
     def findLeaves(self, root: TreeNode) -> List[List[int]]:
         result = []
         self.helper(root, result)
         return result
+    
+    def helper(self, root, result):
+        collection = []
+        root_is_leaf = self.postorder(root, collection)
+        result.append(collection)
+        if root_is_leaf:
+            return
+        self.helper(root, result)
+    
+    def postorder(self, node, collection):
+        if not node:
+            return False
+        if not node.left and not node.right:
+            collection.append(node.val)
+            return True
+        left_is_leaf = self.postorder(node.left, collection)
+        right_is_leaf = self.postorder(node.right, collection)
+        if left_is_leaf:
+            node.left = None
+        if right_is_leaf:
+            node.right = None
+        return False
+
+
+
+#sol2: delete new leaves first, postorder DFS, then clear after collection
+#time: O(n), space: O(n), depth: O(logn)
+class Solution:
+    def findLeaves(self, root: TreeNode) -> List[List[int]]:
+        self.result = []
+        self.postorder(root)
+        return self.result
         
-    def helper(self, node, result):
+    def postorder(self, node):
         if not node:
             return 0
-        left_height = self.helper(node.left, result)
-        right_height = self.helper(node.right, result)
-        cur_height = max(left_height, right_height)
-        if len(result) == cur_height:
-            result.append([])
-        result[cur_height].append(node.val)
+        left_height = self.postorder(node.left)
+        right_height = self.postorder(node.right)
+        current_height = max(left_height, right_height)
+        if current_height == len(self.result):
+            self.result.append([])
+        self.result[current_height].append(node.val)
         node.left = None
         node.right = None
-        return cur_height+1
+        return current_height + 1

@@ -33,6 +33,28 @@ class Solution:
         else:
             self.table[(word1, word2)] = min(self.helper(word1[1:], word2), self.helper(word1, word2[1:]), self.helper(word1[1:], word2[1:]))+1
             return self.table[(word1, word2)]
+#O(m*n), m is the lenght of w1, n is the length of w2
+class Solution:
+    def minDistance(self, word1: str, word2: str) -> int:
+        self.table = {}
+        return self.helper(word1, word2, 0, 0)
+        
+    def helper(self, word1, word2, idx1, idx2):
+        if word1[idx1:] == word2[idx2:]:
+            return 0
+        if idx1 == len(word1):
+            return len(word2[idx2:])
+        if idx2 == len(word2):
+            return len(word1[idx1:])
+        if (idx1, idx2) in self.table:
+            return self.table[(idx1, idx2)]
+        if word1[idx1] == word2[idx2]:
+            self.table[(idx1, idx2)] = self.helper(word1, word2, idx1+1, idx2+1)
+            return self.table[(idx1, idx2)]
+        else:
+            
+            self.table[(idx1, idx2)] = min(self.helper(word1, word2, idx1+1, idx2), self.helper(word1, word2, idx1, idx2+1), self.helper(word1, word2, idx1+1, idx2+1))+1
+            return self.table[(idx1, idx2)]
             
 #DP, direction is reversal to memo:
 class Solution:

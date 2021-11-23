@@ -1,3 +1,5 @@
+#brute force, time: O(n^t), n is the length of coins, t is the amount
+#space: depth:O(t)
 class Solution:
     def change(self, amount: int, coins: List[int]) -> int:
         return self.helper(coins, 0, 0, amount)
@@ -12,6 +14,9 @@ class Solution:
             result += self.helper(coins, idx, current+coins[idx], target)
         return result
 #Memo
+#time: O(n*t), n is the length of coins, t is the amount
+#space: O(n*t)
+#depth: O(t)
 class Solution:
     def change(self, amount: int, coins: List[int]) -> int:
         self.table = {}
@@ -30,6 +35,8 @@ class Solution:
         self.table[(start, current)] = result
         return result
 #DP
+#time: O(n*t), n is the length of coins, t is the amount
+#space: O(t)
 class Solution:
     def change(self, amount: int, coins: List[int]) -> int:
         if amount < 0:

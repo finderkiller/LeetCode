@@ -1,4 +1,5 @@
 #time: O(n*2^n), since there have n*2^n states
+#space: O(n*2^n)
 """
 1. queue initialize by pushing all node, step = 0
 2. BFS

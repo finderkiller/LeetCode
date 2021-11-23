@@ -19,7 +19,7 @@ class Solution:
             sum1 -= nums[idx]
             sum2 += nums[idx]
         return False
-# recursive, memo
+# recursive, memo, time: O(n*total)
 class Solution:
     def canPartition(self, nums: List[int]) -> bool:
         total = sum(nums)
@@ -37,7 +37,7 @@ class Solution:
         self.table[(start, target_sum)] = self.helper(nums, start+1, target_sum) or self.helper(nums, start+1, target_sum-nums[start])
         return self.table[(start, target_sum)]
         
-#DP
+#DP,  time: O(n*total)
 class Solution:
     def canPartition(self, nums: List[int]) -> bool:
         total = sum(nums)

@@ -1,4 +1,5 @@
-
+#time: O(m*n + L), building parent, and rank cost O(m*n), traversing position costs L
+#space: O(m*n)
 
 
 class UnionFind:

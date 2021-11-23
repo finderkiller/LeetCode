@@ -50,7 +50,7 @@ class Solution(object):
 
 #recursive, memo
 #time complexity: O(n^2 + 2^n + w), call edge還是O(2^n)次，但是有用memo紀錄過算過的，所以只會有n+n-1+...+1個edge，也就是n(n+1)/2，O(n^2)。雖然只有n^2個edge 但是每一個edge加總起來都還是會需要traverse 2^n 的組合結果，並且加上一開始要掃w建set)
-#O(2^n*n+w)， result裡面存了2^n種組合，每個組合的長度是n個字串，加上一開始見word_set, O(w)
+#space: O(2^n*n+w)， result裡面存了2^n種組合，每個組合的長度是n個字串，加上一開始見word_set, O(w)
 
 class Solution(object):
     def wordBreak(self, s, wordDict):

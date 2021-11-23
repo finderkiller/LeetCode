@@ -12,7 +12,6 @@ class Solution:
         result = -1
         while len(cur) > 0:
             child = []
-            result += 1
             for (rotten_row, rotten_col) in cur:
                 if rotten_row-1 >= 0 and grid[rotten_row-1][rotten_col] == 1:
                     grid[rotten_row-1][rotten_col] = 2
@@ -27,6 +26,7 @@ class Solution:
                     grid[rotten_row][rotten_col+1] = 2
                     child.append((rotten_row, rotten_col+1))
             cur = child
+            result += 1
         if self.isNoFresh(grid):
             return result
         else:

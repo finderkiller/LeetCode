@@ -1,4 +1,6 @@
 #sol1: subproblems
+#time: O(n!*n)	
+#space: O(n!*n), depth: O(n)
 class Solution:
     def permute(self, nums: List[int]) -> List[List[int]]:
         if not nums:

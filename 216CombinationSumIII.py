@@ -1,21 +1,25 @@
+#combination in k spot, meaning 9!/(9-k)!*k!. and each combination cost O(k) copy to result, so
+#time: O(9!*k/(9-k)!*k!), space: O(k), depth: O(k)
+
 class Solution:
     def combinationSum3(self, k: int, n: int) -> List[List[int]]:
-        if n < k:
-            return []
-        collect = []
+        collection = []
         result = []
-        self.helper(collect, 1, k, n, result)
+        self.helper(collection, 1, n, result, k)
         return result
-    def helper(self, collect, start, k, target, result):
-        if len(collect) == k and target == 0:
-            result.append(list(collect))
+        
+    def helper(self, collection, start, target, result, k):
+        if sum(collection) == target and len(collection) == k:
+            result.append(list(collection))
             return
-        if len(collect) > k or target < 0:
+        if len(collection) > k:
+            return
+        if sum(collection) > target:
             return
         for num in range(start, 10):
-            collect.append(num)
-            self.helper(collect, num+1, k, target-num, result)
-            collect.pop()
+            collection.append(num)
+            self.helper(collection, num+1, target, result, k)
+            collection.pop()
 
 class Solution:
     def combinationSum3(self, k: int, n: int) -> List[List[int]]:

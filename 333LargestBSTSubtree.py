@@ -26,30 +26,26 @@ class Solution:
 # Inorder, O(nlogn)
 class Solution:
     def largestBSTSubtree(self, root: TreeNode) -> int:
-        self.max_node = 0
-        self.helper(root)
-        return self.max_node
-    def helper(self, node):
-        if not node:
-            return
-        result = self.inorder(node)
+        if not root:
+            return 0
+        inorder_list = self.helper(root)
         success = True
-        for idx in range(1, len(result)):
-            if result[idx] <= result[idx-1]:
+        result = 0
+        for idx in range(1, len(inorder_list)):
+            if inorder_list[idx-1] >= inorder_list[idx]:
                 success = False
                 break
-        if success:
-            self.max_node = max(self.max_node, len(result))
-        self.helper(node.left)
-        self.helper(node.right)
-                
+        result = len(inorder_list) if success else 0
+        result = max(result, self.largestBSTSubtree(root.left),\
+                     self.largestBSTSubtree(root.right))
+        return result
         
-    def inorder(self, node):
+    def helper(self, node):
         if not node:
             return []
-        result = self.inorder(node.left)
-        result += [node.val]
-        result += self.inorder(node.right)
+        result = self.helper(node.left)
+        result.append(node.val)
+        result += self.helper(node.right)
         return result
     
 # Inorder, O(nlogn) since each level still traverse n, n-1, n-3....

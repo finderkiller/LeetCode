@@ -1,3 +1,5 @@
+# time: O(2^n), space: for collect, O(N)
+# depth: O(N)
 class Solution:
     def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
         if target == 0:

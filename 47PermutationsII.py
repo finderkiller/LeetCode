@@ -41,7 +41,9 @@ class Solution:
                 table[key] += 1
                 
         return
-        
+
+#time: O(n!*n)	
+#space: O(n!*n), depth: O(n)
 class Solution:
     def permuteUnique(self, nums: List[int]) -> List[List[int]]:
         nums = sorted(nums)

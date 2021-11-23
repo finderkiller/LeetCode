@@ -1,4 +1,6 @@
+#brute force time: O(2^n), depth: O(n)
 #memo
+#time: O(n*t), space: O(n*t), depth: O(n)
 class Solution:
     def findTargetSumWays(self, nums: List[int], S: int) -> int:
         if not nums:
@@ -15,24 +17,22 @@ class Solution:
         self.table[(current_sum, start)] = self.helper(nums, start+1, current_sum+nums[start], target) + self.helper(nums, start+1, current_sum-nums[start], target)
         return self.table[(current_sum, start)]
     
-#DP with hashmap lists:
+#DP with hashmap lists
+#time: O(n*t), space: (n*t)
 class Solution:
     def findTargetSumWays(self, nums: List[int], S: int) -> int:
         if not nums:
             return 0
-        table = [dict() for i in range(len(nums)+1)]
+        table = [{} for i in range(len(nums)+1)]
         table[0][0] = 1
-        
-        for i in range(1, len(table)):
-            nums_index = i-1
-            for sum, count in table[i-1].items():
-                prev_value = table[i].get(sum+nums[nums_index], 0)
-                table[i][sum+nums[nums_index]] = count + prev_value
-                
-                prev_value = table[i].get(sum-nums[nums_index], 0)
-                table[i][sum-nums[nums_index]] = count + prev_value
+        for idx in range(1, len(table)):
+            nums_idx = idx-1
+            for sum, count in table[idx-1].items():
+                table[idx][sum+nums[nums_idx]] = table[idx].get(sum+nums[nums_idx], 0) + count
+                table[idx][sum-nums[nums_idx]] = table[idx].get(sum-nums[nums_idx], 0) + count
         return table[-1].get(S, 0)
 #DP with one hashmap
+#time: O(n*t)
 class Solution:
     def findTargetSumWays(self, nums: List[int], S: int) -> int:
         cur_table = {}

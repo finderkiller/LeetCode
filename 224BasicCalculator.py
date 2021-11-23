@@ -1,35 +1,52 @@
-#O(n)
+#recursive: O(n)
+"""
+recursive see each (
+return see each )
+is_digit
+pre_operator,
+handle if see char not digit
+
+2-1+(2-3+4)
+2-(3+4+6)
+
+
+"""
+
 class Solution:
     def calculate(self, s: str) -> int:
-        string = s.replace(' ', '')
+        if not s:
+            return 0
+        s=s.replace(" ", "")
         self.idx = 0
-        return self.helper(string)
+        return self.helper(s)
+        
     def helper(self, s):
-        operation = "+"
-        current_number = 0
+        cur_num = 0
         result = 0
+        pre_operator = "+"
         while self.idx < len(s):
-            if self.is_digit(s[self.idx]):
-                current_number = 10*current_number + int(s[self.idx])
+            letter = s[self.idx]
+            if self.is_digit(letter):
+                cur_num = cur_num*10 + int(letter)
                 self.idx += 1
-            elif s[self.idx] == "+" or s[self.idx] == "-":
-                result += current_number if operation == "+" else -current_number
-                operation = s[self.idx]
-                current_number = 0
+            elif letter == "+" or letter == "-":
+                result += cur_num if pre_operator == "+" else -cur_num
+                pre_operator = letter
                 self.idx += 1
-            elif s[self.idx] == "(":
+                cur_num = 0
+            elif letter == "(":
                 self.idx += 1
                 forward = self.helper(s)
-                result += forward if operation == "+" else -forward
-            elif s[self.idx] == ")":
-                result += current_number if operation == "+" else -current_number
+                cur_num = forward
+            elif letter == ")":
+                result += cur_num if pre_operator == "+" else -cur_num
                 self.idx += 1
                 return result
-        result += current_number if operation == "+" else -current_number
+        result += cur_num if pre_operator == "+" else -cur_num
         return result
                 
-    def is_digit(self, char):
-        return ord('0') <= ord(char) <= ord('9')
+    def is_digit(self, letter):
+        return ord(letter) >= ord('0') and ord(letter) <= ord('9')
             
                 
                 
