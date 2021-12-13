@@ -127,7 +127,7 @@ class Solution:
                         continue
                     if grid[next_row][next_col] <= 0:
                         if grid[next_row][next_col] != current_land:  #not reaching before
-                            False
+                            return False
                         next_queue.append((next_row, next_col))
             step += 1
             queue = next_queue
